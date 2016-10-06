@@ -107,6 +107,33 @@ class MemeCreationViewController: UIViewController, UIImagePickerControllerDeleg
         let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
         return keyboardSize.CGRectValue().height
     }
+    
+    func saveMeme(memeImage: UIImage) {
+        let meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: imagePickerView.image!, memeImage: memeImage)
+        //print(meme)
+        // Add meme to the memes array in the App Delegate file
+        (UIApplication.sharedApplication().delegate as! AppDelegate).memes.append(meme)
+//        let object = UIApplication.sharedApplication().delegate
+//        let appDelegate =  object as! AppDelegate
+//        appDelegate.memes.append(meme)
+    }
+    
+    func generateMemedImage() -> UIImage {
+        // hide toolbars so they don't appear in meme
+        topToolBar.hidden = true
+        bottomToolBar.hidden = true
+        // Render view to an image
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        view.drawViewHierarchyInRect(self.view.frame, afterScreenUpdates: true)
+        let memedImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        // unhide toolbars
+        topToolBar.hidden = false
+        bottomToolBar.hidden = false
+        
+        return memedImage
+    }
 
     @IBAction func cancelMeme(sender: AnyObject) {
         topTextField.text = "TOP"

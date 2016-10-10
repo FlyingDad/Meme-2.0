@@ -18,6 +18,9 @@ class MemeCreationViewController: UIViewController, UIImagePickerControllerDeleg
     @IBOutlet weak var albumPickButton: UIBarButtonItem!
     @IBOutlet weak var topToolBar: UIToolbar!
     @IBOutlet weak var bottomToolBar: UIToolbar!
+    
+    var meme: Meme!
+    var editingMeme = false
    
     let memeTextAttributes = [
         NSStrokeColorAttributeName : UIColor.blackColor(),
@@ -28,8 +31,6 @@ class MemeCreationViewController: UIViewController, UIImagePickerControllerDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTextFields(topTextField)
-        setupTextFields(bottomTextField)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -37,6 +38,8 @@ class MemeCreationViewController: UIViewController, UIImagePickerControllerDeleg
         cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
         super.viewWillAppear(animated)
         subscribeToKeyboardNotofocations()
+        setupTextFields(topTextField)
+        setupTextFields(bottomTextField)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -54,6 +57,13 @@ class MemeCreationViewController: UIViewController, UIImagePickerControllerDeleg
         textField.defaultTextAttributes = memeTextAttributes
         textField.textAlignment = .Center
         textField.clearsOnBeginEditing = true
+        if editingMeme {
+            imagePickerView.image = meme.originalImage
+            topTextField.text = meme.topText
+            bottomTextField.text = meme.bottomText
+            topToolBarActionButton.enabled = true
+            textField.clearsOnBeginEditing = false
+        }
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
@@ -110,12 +120,7 @@ class MemeCreationViewController: UIViewController, UIImagePickerControllerDeleg
     
     func saveMeme(memeImage: UIImage) {
         let meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: imagePickerView.image!, memeImage: memeImage)
-        //print(meme)
-        // Add meme to the memes array in the App Delegate file
         (UIApplication.sharedApplication().delegate as! AppDelegate).memes.append(meme)
-//        let object = UIApplication.sharedApplication().delegate
-//        let appDelegate =  object as! AppDelegate
-//        appDelegate.memes.append(meme)
     }
     
     func generateMemedImage() -> UIImage {
@@ -136,11 +141,23 @@ class MemeCreationViewController: UIViewController, UIImagePickerControllerDeleg
     }
 
     @IBAction func cancelMeme(sender: AnyObject) {
-        topTextField.text = "TOP"
-        bottomTextField.text = "BOTTOM"
-        imagePickerView.image = nil
-        // Disable Action button on top toolbar
-        topToolBarActionButton.enabled = false
+        let alert = UIAlertController(title: "Warning!", message: "Discard changes?", preferredStyle: .Alert)
+        let dismissAction = UIAlertAction(title: "Discard", style: .Destructive, handler: {
+            action in self.dismissViewControllerAnimated(true, completion: nil)})
+        alert.addAction(dismissAction)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        alert.addAction(cancelAction)
+        self.presentViewController(alert, animated: true, completion:nil)
+        // If we are editing a meme, dismiss the view controller instead of resetting view
+        // dismissViewControllerAnimated(true, completion: nil)
+        //        if editingMeme {
+//            dismissViewControllerAnimated(true, completion: nil)
+//        }
+//        topTextField.text = "TOP"
+//        bottomTextField.text = "BOTTOM"
+//        imagePickerView.image = nil
+//        // Disable Action button on top toolbar
+//        topToolBarActionButton.enabled = false
     }
     
     @IBAction func pickImageForMeme(sender: UIBarButtonItem) {
@@ -162,8 +179,25 @@ class MemeCreationViewController: UIViewController, UIImagePickerControllerDeleg
         nextController.completionWithItemsHandler = {
             (activity: String?, completed: Bool, items: [AnyObject]?, error: NSError?) -> Void in
             if completed {
+                /*
+                // Uncomment this to create 7 memes for quick testing
+
+                for _ in 1...7 {
+                    self.saveMeme(meme)
+                }
+                */
                 self.saveMeme(meme)
-                self.dismissViewControllerAnimated(true, completion: nil)
+                // If editing a Meme, alert that new meme is saves and pop to detail view, else dismiss current view without alert
+                if self.editingMeme {
+                    let alert = UIAlertController(title: "New Meme Saved", message: "", preferredStyle: .Alert)
+                    let dismissAction = UIAlertAction(title: "Dismiss", style: .Default, handler: {
+                        action in self.dismissViewControllerAnimated(true, completion: nil)})
+                    alert.addAction(dismissAction)
+                    self.presentViewController(alert, animated: true, completion:nil)
+                } else {
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                }
+                
             }
         }
     }

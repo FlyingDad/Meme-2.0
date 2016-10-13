@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MemeCreationViewController.swift
 //  Image Picker
 //
 //  Created by Michael Kroth on 9/29/16.
@@ -166,11 +166,11 @@ class MemeCreationViewController: UIViewController, UIImagePickerControllerDeleg
             if completed {
                 
                 // Uncomment this to create 7 memes for quick testing
-
+                /*
                 for _ in 1...7 {
                     self.saveMeme(meme)
                 }
- 
+                */
                 self.saveMeme(meme)
                 // If editing a Meme, alert that new meme is saved and pop to detail view, else dismiss current view without alert
                 if self.editingMeme {

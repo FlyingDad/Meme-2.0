@@ -1,19 +1,37 @@
 # Meme-2.0
+
+![Language](https://img.shields.io/badge/language-Swift%203-orange.svg)
+
+## Notice
+The current version is working with Xcode Version 8.
+
 ## Udacity Meme 2.0 Project
 
-### Project Overview
-Students have created an app that enables a user to take a picture, and add text at the top and bottom to form a meme, and share that meme on Facebook and Twitter and also by SMS or email. In this project, sent memes will appear in a tab view with two tabs: a table view and a collection view.
+## Description
+This app that enables a user to take a picture, and add text at the top and bottom to form a meme, and share that meme on Facebook and Twitter, and also by SMS or email. In this project, sent memes will appear in a tab view with two tabs: a table view and a collection view.## Contributing
 
-### Why this project?
+1. Fork it!
+2. Create your feature branch: `git checkout -b my-new-feature`
+3. Commit your changes: `git commit -am 'Add some feature'`
+4. Push to the branch: `git push origin my-new-feature`
+5. Submit a pull request :D
+
+## Why this project?
 MemeMe covers many of the major UI components found in essentially every app. It combines them with the camera and social media activity view to create a fun and personal user experience.
 
-### What Will I learn?
-Set up a navigation structure that creates an intuitive flow through the app
-Build tables with datasources and delegates
-Create custom table view cells
-Implement user interfaces with tab views and collection views
+## What I learned?
 
-### Why is this project meaningful to my career?
-Becoming comfortable using all of the key components of UIKit is an essential step in becoming an iOS developer.
-Understanding UIKit allows a developer to make educated assumptions about the architecture of apps that they use.
-Mastering UKit fundamentals frees a developer up to learn model-oriented skills like networking and persistence.
+* Collection views and related deegates
+* Multiple type of controls
+* Networking code encapsulated into networking classes
+* Tabbed navigation
+* Photo library and camera access
+* Custom TaleView cells
+
+## Contributing
+
+1. Fork it!
+2. Create your feature branch: `git checkout -b my-new-feature`
+3. Commit your changes: `git commit -am 'Add some feature'`
+4. Push to the branch: `git push origin my-new-feature`
+5. Submit a pull request :D
